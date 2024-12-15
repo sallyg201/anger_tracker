@@ -90,12 +90,13 @@
         <div class="section">
             <h3>Quick Factors</h3>
             <div class="button-group">
-                <button class="quick-note" onclick="addQuickNote('Wellbutrin taken at ' + getCurrentTime())">Wellbutrin</button>
-                <button class="quick-note" onclick="addQuickNote('Anxiety med taken at ' + getCurrentTime())">Anxiety Med</button>
+                <button class="quick-note" onclick="addQuickNote('Wellbutrin taken')">Wellbutrin</button>
+                <button class="quick-note" onclick="addQuickNote('Anxiety med taken')">Anxiety Med</button>
                 <button class="quick-note" onclick="addQuickNote('Social (with others)')">Social</button>
                 <button class="quick-note" onclick="addQuickNote('Gaming')">Gaming</button>
                 <button class="quick-note" onclick="addQuickNote('Working')">Working</button>
                 <button class="quick-note" onclick="addQuickNote('Caffeine 50mg')">Caffeine 50mg</button>
+                <button class="quick-note" onclick="addQuickNote('Exercise')">Exercise</button>
             </div>
             <input type="text" id="notesField" class="time-input" placeholder="Add additional notes or factors">
         </div>
@@ -111,9 +112,9 @@
 
         <button class="clear" onclick="clearData()">Clear All Data</button>
     </div>
-// add google scripts url below: 
+
     <script>
-        const googleAppsScriptUrl = 'https://script.google.com/macros/s/AKfycbx255xN_Rwxzsk-5B31IHdxVQa1i_-3TbK6rrZJ7L24AlG2MHoBkzKFgR4q1G3xtBZ35g/exec';
+        const googleAppsScriptUrl = 'https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_URL/exec';
 
         let chart;
         let entries = [];
@@ -151,11 +152,6 @@
         function addQuickNote(noteText) {
             const notesField = document.getElementById('notesField');
             notesField.value += (notesField.value ? '; ' : '') + noteText;
-        }
-
-        function getCurrentTime() {
-            const now = new Date();
-            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
 
         function clearData() {
@@ -205,15 +201,24 @@
                             max: 4,
                             ticks: {
                                 stepSize: 1,
-                                callback: value => ['', 'Calm', 'Mild', 'Strong', 'Intense'][value]
+                                callback: function(value) {
+                                    return ['', 'Calm', 'Mild', 'Strong', 'Intense'][value];
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
                             }
                         },
                         x: {
-                            grid: { color: 'rgba(0, 0, 0, 0.1)' }
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
                         }
                     },
                     plugins: {
-                        legend: { display: false }
+                        legend: {
+                            display: false
+                        }
                     }
                 }
             });
